@@ -1,7 +1,7 @@
+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
+
 /*
-
-
-
+ DAA
 knapsack
 import java.util.Scanner;
 public class Kanpsack 
@@ -554,118 +554,372 @@ while ((i < mid1) && (k < high)) // case where first and third ranges have remai
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-linkedlist
-public class QuickSortLinkedList {
- static class Node {
- int data;
- Node next;
- Node(int d)
- {
- this.data = d;
- this.next = null;
- }
- }
- 
- Node head;
- 
- void addNode(int data)
- {
- if (head == null) {
- head = new Node(data);
- return;
- }
- 
- Node curr = head;
- while (curr.next != null)
- curr = curr.next;
- 
- Node newNode = new Node(data);
- curr.next = newNode;
- }
- 
- void printList(Node n)
- {
- while (n != null) {
- System.out.print(n.data);
- System.out.print(" ");
- n = n.next;
- }
- }
- 
- // Takes first and last node, but do not break any links in the whole linked list
- Node partitionLast(Node start, Node end)
- {
- if (start == end || start == null || end == null)
- return start;
- 
- Node pivot_prev = start;
- Node curr = start;
- int pivot = end.data;
- 
- // iterate till one before the end, no need to iterate till the end because end is pivot
- while (start != end) {
- if (start.data < pivot) {
- // keep tracks of last modified item
- pivot_prev = curr;
- int temp = curr.data;
- curr.data = start.data;
- start.data = temp;
- curr = curr.next;
- }
- start = start.next;
- }
- 
- // Swap the position of curr i.e.next suitable index and pivot
- int temp = curr.data;
- curr.data = pivot;
- end.data = temp;
- 
- // Return one previous to current // because current is now pointing to pivot
- return pivot_prev;
- }
- 
- void sort(Node start, Node end)
- {
- if (start == null || start == end || start == end.next)
- return;
- 
- // Split list and partition recurse
- Node pivot_prev = partitionLast(start, end);
- sort(start, pivot_prev);
- 
- // If pivot is picked and moved to the start, that means start and pivot is same
- // so pick from next of pivot
- if (pivot_prev != null && pivot_prev == start)
- sort(pivot_prev.next, end);
- 
- // If pivot is in between of the list, start from next of pivot,
- // since we have pivot_prev, so we move two nodes
- else if (pivot_prev != null && pivot_prev.next != null)
- sort(pivot_prev.next.next, end);
- }
- 
- // Driver's Code
- public static void main(String[] args)
- {
- QuickSortLinkedList list = new QuickSortLinkedList();
- list.addNode(30);
- list.addNode(3);
- list.addNode(4);
- list.addNode(20);
- list.addNode(5);
- 
- Node n = list.head;
- while (n.next != null)
- n = n.next;
- 
- System.out.println("Linked List before sorting");
- list.printList(list.head);
- 
- // Function call
- list.sort(list.head, n);
- 
- System.out.println("\nLinked List after sorting");
- list.printList(list.head);
- }
+
+
+TSP
+
+
+public class Travellingsalesman {
+
+   
+    public static void main(String[] args) {
+        
+        int n=0;
+        int c[][]=new int[10][10],tour[]=new int[10];
+        Scanner in=new Scanner (System.in);
+        int i,j,cost;
+        System.out.println(" TSP Dynamic Programming");
+        System.out.println("Enter the number of cities");
+        n=in.nextInt();
+        
+        if(n==1)
+        {
+            System.out.println("Path not possible");
+            System.exit(0);
+        }
+        System.out.println("Enter the cost matrix");
+        
+        for(i=1;i<=n;i++)
+        {
+            for(j=1;j<=n;j++)
+            {
+                c[i][j]=in.nextInt();
+                
+            }
+        }
+        
+        
+        System.out.println("The entered cost matrix");
+        
+        for(i=1;i<=n;i++)
+        {
+            for(j=1;j<=n;j++)
+            {
+               System.out.print( c[i][j]+"\t");
+                
+            }
+            System.out.println();
+        }
+
+        for(i=1;i<=n;i++)
+            tour[i]=i;
+        cost=tspdp(c,tour,1,n);
+        System.out.println("The accurate path is");
+        for(i=1;i<=n;i++)
+            System.out.print(tour[i]+"->");
+        System.out.println('1');
+        System.out.println("The accurate min cost is : "+cost);
+
+
+    }
+    
+    static int tspdp(int c[][],int tour[],int start,int n)
+    {
+        int mintour[]=new int[10],temp[]=new int[10],mincost=999,cost,i,j,k;
+        
+        if(start==n-1)
+        {
+            return(c[tour[n-1]][tour[n]]+c[tour[n]][1]);
+            
+        }
+        
+        for(i=start+1;i<=n;i++)
+        {
+            for(j=1;j<=n;j++)
+                temp[j]=tour[j];
+            temp[start+1]=tour[i];
+            temp[i]=tour[start+1];
+            
+            if(c[tour[start]][tour[i]]+(cost=tspdp(c,temp,start+1,n))<mincost)
+            {
+                mincost=c[tour[start]][tour[i]]+cost;
+                for(k=1;k<=n;k++)
+                    mintour[k]=temp[k];
+            }
+        }
+        for(i=1;i<=n;i++)
+            tour[i]=mintour[i];
+        return mincost;
+        
+    }
+    
+    
+    
 }
+
+
+
+BELLMAN
+
+
+package javaapplication125;
+import java.util.*;
+public class bellman {
+    private int distances[];
+    private int n;
+    public static final int MAX_VALUE=999;
+    
+    public bellman(int n)
+    {
+        this.n=n;
+        distances=new int[n+1];
+    }
+    public void bellmanevaluation(int source,int c[][])
+    {
+       for(int node=1;node<=n;node++)
+       {
+           distances[node]=MAX_VALUE;
+       }
+       distances[source]=0;
+       for(int node=1;node<=n-1;node++)
+       {
+           for(int sn=1;sn<=n;sn++)
+           {
+               for(int dn=1;dn<=n;dn++)
+               {
+                   if(c[sn][dn]!=MAX_VALUE)
+                   {
+                       if(distances[dn]>distances[sn]+c[sn][dn])
+                           distances[dn]=distances[sn]+c[sn][dn];
+                   }
+               }
+           }
+       }
+       for(int sn=1;sn<=n;sn++)
+       {
+           for(int dn=1;dn<=n;dn++)
+           {
+               if(c[sn][dn]!=MAX_VALUE)
+               {
+                   if(distances[dn]>distances[sn]+c[sn][dn])
+                       System.out.println("The graph contains negative cycle");
+               }
+           }
+       }
+       for(int vertex=1;vertex<=n;vertex++)
+       {
+           System.out.println("distance of source "+source+"to"+vertex+"is"+distances[vertex]);
+       }
+    }
+    public static void main(String args[])
+    {
+        int n=0;
+        int source;
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Enter the no of vertices");
+        n=sc.nextInt();
+        int c[][]=new int[n+1][n+1];
+        System.out.println("Enter adj matrix");
+        for(int sn=1;sn<=n;sn++)
+        {
+            for(int dn=1;dn<=n;dn++)
+            {     
+                c[sn][dn]=sc.nextInt();
+                if(sn==dn)
+                {
+                    c[sn][dn]=0;
+                    continue;
+               }
+                if(c[sn][dn]==0)
+                {
+                    c[sn][dn]=MAX_VALUE;
+                }
+           }
+        }
+        System.out.println("Enter the source vertex");
+        source=sc.nextInt();
+        bellman bellman=new bellman(n);
+        bellman.bellmanevaluation(source,c);
+        sc.close();
+    }
+}
+
+
+
+xxxxxxxxxxxxxxxxxxx
+
+
+floyds
+
+import java.util.Scanner;
+public class floyd
+{
+public static void main(String[] args)
+{
+int a[][]=new int[10][10];
+int i, j;
+Scanner in = new Scanner(System.in);
+System.out.println("***********FLOYD'SALGORITHM**********");
+System.out.println("Enter the number of vertices: ");
+int n = in.nextInt();
+System.out.println("Enter the adjacency matrix");
+for (i=1; i<=n; i++)
+for (j=1;j<=n;j++)
+a[i][j] = in.nextInt();
+System.out.println("Entered adjacency matrix is: ");
+for(i=1;i<=n;i++)
+{
+for(j=1; j<=n; j++)
+{
+System.out.print(a[i][j]+"\t");
+}
+System.out.println();
+}
+floydalgo(a,n);
+System.out.println("All pair shortest path matrix:");
+for (i=1; i<=n; i++)
+{
+for (j=1; j<=n; j++)
+System.out.print(a[i][j]+"\t");
+System.out.println();
+}
+System.out.println("************ ********* **************");
+}
+static void floydalgo(int a[][],int n)
+{
+for (int k=1; k<=n; k++)
+{
+for (int i=1; i<=n; i++)
+for (int j=1; j<=n; j++)
+a[i][j] = min(a[i][j], a[i][k] + a[k][j]);
+}
+}
+static int min(int a,int b)
+{
+if(a>b)
+else
+}
+}
+return b;
+return a;
+}}
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+subset
+
+import java.util.Scanner;
+import java.util.Scanner;
+public class Bushu
+{
+static int c=0;
+public static void main(String[] args)
+{
+int w[]=new int[10];
+int n, d, i, sum=0; 
+int x[]=new int[10]; 
+Scanner in=new Scanner(System.in);
+System.out.println("********** SUBSET PROBLEM ************");
+System.out.println("Enter the number of elements: "); 
+n=in.nextInt();
+System.out.println("Enter the elements in increasing order");
+for(i=0;i<n;i++) 
+w[i]=in.nextInt();
+System.out.println("Enter the value of d: "); 
+d=in.nextInt();
+for(i=0;i<n;i++)
+sum=sum+w[i]; 
+System.out.println("SUM ="+sum);
+if(sum < d || w[0] > d)
+{
+System.out.println("Subset is not possible ! "); 
+System.out.println("********** *********** *************"); 
+System.exit(0);
+}
+finalsubset(0,0,sum,x,w,d);
+if(c==0)
+System.out.println("Subset is not possible ! ");
+System.out.println("\n********** ********* *************");
+}
+static void finalsubset(int cs, int k, int r,int x[],int w[],int d)
+{
+x[k] = 1;
+if(cs+w[k] == d)
+{
+c++;
+System.out.print("\n Solution "+c+" is {");
+for(int i=0;i<=k;i++)
+if(x[i] == 1)
+{
+System.out.print(w[i]+" ");
+}
+System.out.print("}");
+}
+else if((cs + w[k] + w[k+1]) <= d)
+{
+finalsubset(cs + w[k], k+1, r-w[k], x, w, d);
+}
+if((cs + r - w[k]) >= d && (cs + w[k+1]) <= d)
+{
+x[k] = 0;
+finalsubset(cs, k+1, r-w[k], x, w, d);
+}
+}
+}
+
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+import java.util.Scanner;
+public class Hamiltonion {
+static int [] x = new int [25];
+static void Next_Vertex(int G[][],int n,int k)
+{
+int j; 
+while(true)
+{
+x[k]=(x[k]+1)%(n+1);
+if(x[k]==0) return;
+if(G[x[k-1]][x[k]]!=0)
+{
+for(j=1;j<=k-1;j++)
+{
+if(x[j]==x[k]) break;
+}
+if(j==k)
+{
+if((k<n)||((k==n)&&(G[x[n]][x[1]]!=0))) return;
+}
+}
+}
+}
+static void H_Cycle(int G[][],int n,int k)
+{
+int i;
+while(true)
+{
+Next_Vertex(G,n,k); 
+if(x[k]==0) return; 
+if(k==n)
+{
+System.out.println("\n"); 
+for(i=1;i<=n;i++)
+System.out.print(x[i] +"-->");
+ System.out.println(x[1]);
+}
+else
+H_Cycle(G,n,k+1);
+}
+}
+public static void main(String[] args) 
+{ 
+int i,j,n;
+int [][] G = new int [25][25];
+Scanner read = new Scanner(System.in); 
+System.out.println("Enter the number of vertices of the graph"); 
+n=read.nextInt();
+System.out.println("Enter the Path adjacency matrix");
+for(i=1;i<=n;i++)
+{
+for(j=1;j<=n;j++)
+{
+G[i][j]=read.nextInt();
+x[i]=0;
+}
+} x[1]=1;
+System.out.println(" \n Hamiltonian Cycles are");
+H_Cycle(G,n,2);
+}
+}
+
+
  */
